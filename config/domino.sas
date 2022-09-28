@@ -94,17 +94,18 @@
 
 * SDTM ;
 * ------------------------------------------------------------------;
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),SDTM)) ge 1
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),SDTM)) ge 1 %then %do;
   * Local read/write access to SDTM and QC folders ;
   libname SDTM   "/domino/datasets/local/SDTM";
   libname SDTMQC "/domino/datasets/local/SDTMQC";
+  libname SDTMQC "/domino/datasets/local/RAW";
 %end;
 
 * TFL ;
 * ------------------------------------------------------------------;
 * this must come before ADAM code block so that combines ADAM+TFL ;
 * projects hasve the ADAM librry defined last (i.e. local not imported snapshot);
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),TFL)) ge 1
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),TFL)) ge 1 %then %do;
   * imported read-only access to ADaM folder;
   libname ADAM "/mnt/imported/data/ADAM" access=readonly;
   * local read/write for TFL datasets ;
@@ -114,7 +115,7 @@
 
 * ADAM ;
 * ------------------------------------------------------------------;
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),ADAM)) ge 1
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),ADAM)) ge 1 %then %do;
   * imported read-only SDTM data, using the data cutoff date.. ;
   * ..to identify the correct snapshot to use ;
   libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
@@ -126,7 +127,7 @@
 
 * RunAll ;
 * ------------------------------------------------------------------;
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),RUNALL)) ge 1
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),RUNALL)) ge 1 %then %do;
   * imported read-only SDTM data, using the data cutoff date.. ;
   * ..to identify the correct snapshot to use ;
   libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
