@@ -42,8 +42,9 @@
 * Assumptions: 
 * - Must be run on the Domino platform (assumes Domino environment vars)
 * ____________________________________________________________________________
-* PROGRAM HISTORY                                     fu                    
-*  2022-06-06  |   Stuart.Malcolm  | Program created
+* PROGRAM HISTORY                                                         
+*  2022-06-06  | Stuart.Malcolm  | Program created
+*  2022-09-28  | Stuart.Malcolm  | Ported code to TFL_Standard_Repo 
 * ----------------------------------------------------------------------------
 *  YYYYMMDD  |  username        | ..description of change..         
 *****************************************************************************/
@@ -93,45 +94,48 @@
 
 * SDTM ;
 * ------------------------------------------------------------------;
-%if %upcase(&__PROJECT_TYPE.) eq SDTM %then %do;
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),SDTM)) ge 1
   * Local read/write access to SDTM and QC folders ;
-  libname SDTM   "/mnt/data/SDTM";
-  libname SDTMQC "/mnt/data/SDTMQC";
-%end;
-
-* ADAM ;
-* ------------------------------------------------------------------;
-%if %upcase(&__PROJECT_TYPE.) eq ADAM %then %do;
-  * imported read-only SDTM data, using the data cutoff date.. ;
-  * ..to identify the correct snapshot to use ;
-  libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
-  * local read/write acces to ADaM and QC folders;
-  libname ADAM   "/mnt/data/ADAM";
-  libname ADAMQC "/mnt/data/ADAMQC";
+  libname SDTM   "/domino/datasets/local/SDTM";
+  libname SDTMQC "/domino/datasets/local/SDTMQC";
 %end;
 
 * TFL ;
 * ------------------------------------------------------------------;
-%if %upcase(&__PROJECT_TYPE.) eq TFL %then %do;
+* this must come before ADAM code block so that combines ADAM+TFL ;
+* projects hasve the ADAM librry defined last (i.e. local not imported snapshot);
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),TFL)) ge 1
   * imported read-only access to ADaM folder;
   libname ADAM "/mnt/imported/data/ADAM" access=readonly;
   * local read/write for TFL datasets ;
-  libname TFL   "/mnt/data/TFL";
-  libname TFLQC "/mnt/data/TFLQC";
+  libname TFL   "/domino/datasets/local/TFL";
+  libname TFLQC "/domino/datasets/local/TFLQC";
 %end;
 
-* RunAll ;
+* ADAM ;
 * ------------------------------------------------------------------;
-%if %upcase(&__PROJECT_TYPE.) eq RUNALL %then %do;
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),ADAM)) ge 1
   * imported read-only SDTM data, using the data cutoff date.. ;
   * ..to identify the correct snapshot to use ;
   libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
   * local read/write acces to ADaM and QC folders;
-  libname ADAM   "/mnt/data/ADAM";
-  libname ADAMQC "/mnt/data/ADAMQC";
+  libname ADAM   "/domino/datasets/local/ADAM";
+  libname ADAMQC "/domino/datasets/local/ADAMQC";
+%end;
+
+
+* RunAll ;
+* ------------------------------------------------------------------;
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),RUNALL)) ge 1
+  * imported read-only SDTM data, using the data cutoff date.. ;
+  * ..to identify the correct snapshot to use ;
+  libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
+  * local read/write acces to ADaM and QC folders;
+  libname ADAM   "/domino/datasets/local/ADAM";
+  libname ADAMQC "/domino/datasets/local/ADAMQC";
   * local read/write for TFL datasets ;
-  libname TFL   "/mnt/data/TFL";
-  libname TFLQC "/mnt/data/TFLQC";
+  libname TFL   "/domino/datasets/local/TFL";
+  libname TFLQC "/domino/datasets/local/TFLQC";
 %end;
 
 * ==================================================================;
@@ -140,7 +144,7 @@
 options
   MAUTOSOURCE
   MAUTOLOCDISPLAY 
-  sasautos=("/mnt/code/share/macros",SASAUTOS) ;
+  sasautos=("/repos/SDTM_Standard_Code/share/macros","/mnt/share/macros",SASAUTOS) ;
 
 * ==================================================================;
 * Determine if we are running Interactive or Batch ;
@@ -195,7 +199,7 @@ options
 * ==================================================================;
 %if &__runmode eq %str(BATCH) %then %do;
   * Redirect SAS LOG files when in batch mode;
-  PROC PRINTTO LOG="/mnt/artifacts/logs/&__prog_name..log";
+  PROC PRINTTO LOG="/mnt/logs/&__prog_name..log";
 %end;
 
 %mend __setup;
