@@ -145,7 +145,7 @@
 options
   MAUTOSOURCE
   MAUTOLOCDISPLAY 
-  sasautos=("/repos/SDTM_Standard_Code/share/macros","/mnt/share/macros",SASAUTOS) ;
+  sasautos=("/repos/SDTM_Standard_Code/share/macros","/repos/TFL_Standard_Code/share/macros","/mnt/share/macros",SASAUTOS) ;
 
 * ==================================================================;
 * Determine if we are running Interactive or Batch ;
