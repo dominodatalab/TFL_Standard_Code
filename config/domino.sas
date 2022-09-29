@@ -118,7 +118,7 @@
 %if %sysfunc(find(%upcase(&__PROJECT_TYPE.),ADAM)) ge 1 %then %do;
   * imported read-only SDTM data, using the data cutoff date.. ;
   * ..to identify the correct snapshot to use ;
-  libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
+  libname SDTM "/domino/datasets/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
   * local read/write acces to ADaM and QC folders;
   libname ADAM   "/domino/datasets/local/ADAM";
   libname ADAMQC "/domino/datasets/local/ADAMQC";
