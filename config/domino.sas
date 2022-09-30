@@ -207,7 +207,7 @@ options
 * ==================================================================;
 %if &__runmode eq %str(BATCH) %then %do;
   * Redirect SAS LOG files when in batch mode;
-  PROC PRINTTO LOG="&__WORKING_DIR./logs/&__prog_name..log" NEW;
+  *PROC PRINTTO LOG="&__WORKING_DIR./logs/&__prog_name..log" NEW;
 %end;
 
 %mend __setup;
