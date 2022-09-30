@@ -27,7 +27,7 @@
 \*****************************************************************************/
 
 *********;
-%include "/repos/TFL_Standard_Code/config//domino.sas";
+%include "/repos/TFL_Standard_Code/config/domino.sas";
 *********;
 
 
@@ -36,7 +36,7 @@
 data xptnames;
 	length fref $8 fname $200;
 	dsnum = 1;
-	tmp = filename(fref,'/mnt/data/ADAM');
+	tmp = filename(fref,"&__localdata_path./ADAM");
 	tmp = dopen(fref);
 	do i = 1 to dnum(tmp);
 		fname = dread(tmp,i);
@@ -54,7 +54,7 @@ run;
 /* create macro variables xpt_name_1,... and xpt_path_1,... to capture all individual xpt file names and paths */
 data _NULL_;
 	set xptnames;
-	call symputx(cats('XPT_path_', dsnum), cats("'/mnt/data/ADAM/",fname,"'"), 'g'); 
+	call symputx(cats('XPT_path_', dsnum), cats("'&__localdata_path./ADAM/",fname,"'"), 'g'); 
 	call symputx(cats('XPT_name_', dsnum), scan(fname,1,'.'), 'g');
 run;
 %put _USER_;
