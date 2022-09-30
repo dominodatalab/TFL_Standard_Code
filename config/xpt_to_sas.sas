@@ -22,11 +22,12 @@
 *
 * ____________________________________________________________________________
 * PROGRAM HISTORY                                                         
-*  14JUN2022    | Jake Tombeur   | Original version
+*  14JUN2022  | Jake Tombeur   | Original version
+*  30SEP2022  | Stuart Malcolm | Ported TFL_Standard_Code repo (change incl path)
 \*****************************************************************************/
 
 *********;
-%include "!DOMINO_WORKING_DIR/config/domino.sas";
+%include "/repos/TFL_Standard_Code/config//domino.sas";
 *********;
 
 
