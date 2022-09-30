@@ -103,9 +103,9 @@
 * ------------------------------------------------------------------;
 %if %sysfunc(find(%upcase(&__PROJECT_TYPE.),SDTM)) ge 1 %then %do;
   * Local read/write access to SDTM and QC folders ;
-  libname SDTM   "/domino/datasets/local/SDTM";
-  libname SDTMQC "/domino/datasets/local/SDTMQC";
-  libname SDTMQC "/domino/datasets/local/RAW";
+  libname SDTM   "&__localdata_path./SDTM";
+  libname SDTMQC "&__localdata_path./SDTMQC";
+  libname SDTMQC "&__localdata_path./RAW";
 %end;
 
 * TFL ;
@@ -116,8 +116,8 @@
   * imported read-only access to ADaM folder;
   libname ADAM "/mnt/imported/data/ADAM" access=readonly;
   * local read/write for TFL datasets ;
-  libname TFL   "/domino/datasets/local/TFL";
-  libname TFLQC "/domino/datasets/local/TFLQC";
+  libname TFL   "&__localdata_path./TFL";
+  libname TFLQC "&__localdata_path./TFLQC";
 %end;
 
 * ADAM ;
@@ -127,8 +127,8 @@
   * ..to identify the correct snapshot to use ;
   libname SDTM "/domino/datasets/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
   * local read/write acces to ADaM and QC folders;
-  libname ADAM   "/domino/datasets/local/ADAM";
-  libname ADAMQC "/domino/datasets/local/ADAMQC";
+  libname ADAM   "&__localdata_path./ADAM";
+  libname ADAMQC "&__localdata_path./ADAMQC";
 %end;
 
 
@@ -139,11 +139,11 @@
   * ..to identify the correct snapshot to use ;
   libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
   * local read/write acces to ADaM and QC folders;
-  libname ADAM   "/domino/datasets/local/ADAM";
-  libname ADAMQC "/domino/datasets/local/ADAMQC";
+  libname ADAM   "&__localdata_path./ADAM";
+  libname ADAMQC "&__localdata_path./ADAMQC";
   * local read/write for TFL datasets ;
-  libname TFL   "/domino/datasets/local/TFL";
-  libname TFLQC "/domino/datasets/local/TFLQC";
+  libname TFL   "&__localdata_path./TFL";
+  libname TFLQC "&__localdata_path./TFLQC";
 %end;
 
 * ==================================================================;
@@ -223,6 +223,7 @@ options
 %put TRACE: (domino.sas) [__DCUTDTC = &__DCUTDTC.];
 %put TRACE: (domino.sas) [__PROTOCOL = &__PROTOCOL.];
 %put TRACE: (domino.sas) [__PROJECT_TYPE = &__PROJECT_TYPE.];
+%put TRACE: (domino.sas) [__localdata_path = &__localdata_path.];
 %put TRACE: (domino.sas) [__prog_path = &__prog_path.];
 %put TRACE: (domino.sas) [__prog_name = &__prog_name.];
 %put TRACE: (domino.sas) [__prog_ext = &__prog_ext.];
