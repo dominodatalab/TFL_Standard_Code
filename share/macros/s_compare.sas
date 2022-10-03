@@ -1052,7 +1052,7 @@
           %local ___dat ___tim ___username;
           %let ___dat=%sysfunc(date(),yymmdd10.);
           %let ___tim=%sysfunc(time(),time5.);
-          %let ___username=%sysget(username);
+          %let ___username=%sysget(DOMINO_STARTING_USERNAME);
 
           title1 "Study: %str(&_studyid.)";
           title3 "Summary of Dataset Compare";
