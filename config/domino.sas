@@ -71,8 +71,8 @@
 %global __prog_path;     * full path to the program being run;
 %global __prog_name;     * filename (without extension) of program;
 %global __prog_ext;      * extension of program (usuall sas);
-
-%global __full_path;     * full path and filename ;
+%global __results_path;  * path to output file (e.g. for TFL write);
+%global __full_path;     * full path and filename of program;
 %global __runmode;       * INTERACTIVE or BATCH (or UNKNOWN);
 
 * ==================================================================;
@@ -83,6 +83,8 @@
 %let __DCUTDTC      = %sysget(DCUTDTC);
 * runtime check that e.g. DCUTDTC is not missing;
 %if &__DCUTDTC. eq %str() %then %put %str(ER)ROR: Envoronment Variable DCUTDTC not set;
+* set  directory  where outputs (TFL) are written to;
+%let __results_path=&__WORKING_DIR./results;
 
 * ==================================================================;
 * extract the protocol and project type from the project name;
@@ -229,6 +231,7 @@ options
 %put TRACE: (domino.sas) [__prog_path = &__prog_path.];
 %put TRACE: (domino.sas) [__prog_name = &__prog_name.];
 %put TRACE: (domino.sas) [__prog_ext = &__prog_ext.];
+%put TRACE: (domino.sas) [__results_path = &__results_path.];
 
 * List all the libraries that are currently defined;
 libname _all_ list;
