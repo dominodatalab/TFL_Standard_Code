@@ -88,8 +88,10 @@
 * extract the protocol and project type from the project name;
 * ==================================================================;
 %if %sysfunc(find(&__PROJECT_NAME.,_)) ge 1 %then %do;
+  %* found an underscrore, so assume project name is <PROTOCOL>_<TYPE> ;
   %let __PROTOCOL     = %scan(&__PROJECT_NAME.,1,'_');
-  %let __PROJECT_TYPE = %scan(&__PROJECT_NAME.,2,'_');
+  %* project type is everything after the protocol in the project name ;
+  %let __PROJECT_TYPE = %sysfunc(tranwrd(&__PROJECT_NAME.,&__PROTOCOL._, %str()));
   %end;
 %else %do;
   %put %str(ER)ROR: Project Name (DOMINO_PROJECT_NAME) ill-formed. Expecting <PROTOCOL>_<TYPE> ;
